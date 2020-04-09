@@ -1,0 +1,9 @@
+{
+  "name": "generate-textures",
+  "version": "0.1.0",
+  "description": "Generate PixiJS Textures at development and build time.",
+  "bin": {
+    "generate-textures": "src/cli.js"
+  },
+  "author": "Hubol"
+}
