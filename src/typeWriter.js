@@ -39,7 +39,7 @@ export function loadTexturesAsync()
     const loader = new PIXI.Loader();
 ${loadsText}
     
-    return new Promise(resolve =>
+    return new Promise<void>(resolve =>
     {
         loader.load((_, resources) => {
 ${assignmentsText}
