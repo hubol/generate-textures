@@ -1,9 +1,30 @@
 {
   "name": "generate-textures",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Generate PixiJS Textures at development and build time.",
-  "bin": {
-    "generate-textures": "src/cli.js"
+  "files": [
+    "dist/"
+  ],
+  "scripts": {
+    "prepare": "rimraf dist && tsc",
+    "test": "jest"
   },
-  "author": "Hubol"
+  "bin": {
+    "generate-textures": "dist/cli.js"
+  },
+  "author": "Hubol",
+  "devDependencies": {
+    "@types/jest": "^26.0.15",
+    "@types/mock-fs": "^4.13.0",
+    "@types/node": "^14.14.9",
+    "jest": "^26.6.3",
+    "mock-fs": "^4.13.0",
+    "rimraf": "^3.0.2",
+    "ts-jest": "^26.4.4",
+    "typescript": "^4.1.2"
+  },
+  "dependencies": {
+    "pissant": "^0.1.2",
+    "pissant-node": "^0.1.5"
+  }
 }

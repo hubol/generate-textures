@@ -1,10 +1,12 @@
-const fs = require("fs");
-const { getDirectory, createDirectory, getRelativePath } = require("./utils/file");
+import {createDirectory, getDirectory, getRelativePath} from "pissant-node";
+import {Config} from "./config";
+import {TextureDescription} from "./mapper";
+import fs from "fs";
 
-function writeTypescriptFile(soundDescriptions, config)
+export function writeTypescriptFile(textureDescriptions: TextureDescription[], config: Config)
 {
     createDirectory(getDirectory(config.definitionDestFilePath));
-    const newTypescriptText = composeTypescriptText(soundDescriptions, config);
+    const newTypescriptText = composeTypescriptText(textureDescriptions, config);
     if (fs.existsSync(config.definitionDestFilePath))
     {
         const currentTypescriptText = fs.readFileSync(config.definitionDestFilePath).toString();
@@ -16,7 +18,7 @@ function writeTypescriptFile(soundDescriptions, config)
     fs.writeFileSync(config.definitionDestFilePath, newTypescriptText);
 }
 
-function composeTypescriptText(textureDescriptions, config)
+function composeTypescriptText(textureDescriptions: TextureDescription[], config: Config)
 {
     let loadsText = "";
     let definitionsText = "";
@@ -49,25 +51,23 @@ ${assignmentsText}
 }`;
 }
 
-function toLoadText(soundDescription, typescriptFilePath)
+function toLoadText(textureDescription: TextureDescription, typescriptFilePath: string)
 {
     const typescriptDirectory = getDirectory(typescriptFilePath);
     return `
-    const ${soundDescription.typedName}Path = require("${getRelativePath(typescriptDirectory, soundDescription.sourceFilePath)}");
-    loader.add(${soundDescription.typedName}Path); 
+    const ${textureDescription.typedName}Path = require("${getRelativePath(typescriptDirectory, textureDescription.sourceFilePath)}");
+    loader.add(${textureDescription.typedName}Path); 
 `;
 }
 
-function toDefinitionText(soundDescription)
+function toDefinitionText(textureDescription: TextureDescription)
 {
-    return `export let ${soundDescription.typedName}: PIXI.Texture = undefined as unknown as PIXI.Texture;
+    return `export let ${textureDescription.typedName}: PIXI.Texture;
 `;
 }
 
-function toAssignmentText(soundDescription)
+function toAssignmentText(textureDescription: TextureDescription)
 {
-    return `            ${soundDescription.typedName} = resources[${soundDescription.typedName}Path]?.texture as PIXI.Texture;
+    return `            ${textureDescription.typedName} = resources[${textureDescription.typedName}Path]?.texture as PIXI.Texture;
 `;
 }
-
-module.exports = { writeTypescriptFile };

@@ -1,13 +1,14 @@
-const { toPascalCase } = require("./utils/pascalCaser");
-const { getAllFiles, getRelativePath } = require("./utils/file");
+import {Config} from "./config";
+import {getAllFiles, getRelativePath} from "pissant-node";
+import {toPascalCase} from "./toPascalCase";
 
-function getTextureDescriptions(config)
+export function getTextureDescriptions(config: Config)
 {
     return getAllFiles(config.textureSourceDirectoryPath)
         .map(x => toTextureDescription(x, config.textureSourceDirectoryPath));
 }
 
-function toTextureDescription(textureFilePath, sourceDirectoryPath)
+function toTextureDescription(textureFilePath: string, sourceDirectoryPath: string)
 {
     const textureFileName = getRelativePath(sourceDirectoryPath, textureFilePath);
     const textureFileNameNoExtension = textureFileName.replace(/\.[^/.]+$/, "");
@@ -19,4 +20,4 @@ function toTextureDescription(textureFilePath, sourceDirectoryPath)
     };
 }
 
-module.exports = { getTextureDescriptions };
+export type TextureDescription = ReturnType<typeof toTextureDescription>;
